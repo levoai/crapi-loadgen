@@ -22,7 +22,7 @@ public class LevocrAPI {
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--headless");
 		options.addArguments("start-maximized");
-		options.addArguments("window-size=1920,1080");
+		options.addArguments("window-size=1200,600");
 		options.setAcceptInsecureCerts(true);
 		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/Drivers/chromedriver");
 		WebDriver driver=new ChromeDriver(options);
@@ -40,7 +40,7 @@ public class LevocrAPI {
 		//DashBoard
 		dashBoard(driver,element);		
 		//Shop
-		shop(driver,element,jse);		
+		//shop(driver,element,jse);		
 		//Community
 		community(driver,element);	
 		//logout
