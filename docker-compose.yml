@@ -19,3 +19,4 @@ services:
     environment:
       CRAPI_URL: '${CRAPI_URL:-http://host.docker.internal:8080}'
       SELENIUM_HOST: 'selenium-chrome'
+      REMOTE_DRIVER_MODE: 'true'

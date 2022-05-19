@@ -1,9 +1,11 @@
 package ai.levo.crapi.loadgen;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,15 +22,24 @@ public class CrapiLoadgen {
     }
 
     public void generateLoad() throws InterruptedException, MalformedURLException {
-//        System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/Drivers/chromedriver");
-//        WebDriver driver = new ChromeDriver(options);
+        System.setProperty("webdriver.chrome.whitelistedIps", "");
+        WebDriverManager.chromedriver().setup();
 
-        String remoteHost = Objects.requireNonNullElse(System.getenv("SELENIUM_HOST"), "host.docker.internal");
-        String remote_url_chrome = "http://" + remoteHost + ":4444/wd/hub";
-        WebDriver driver = new RemoteWebDriver(new URL(remote_url_chrome), getChromeOptions());
+        String remote = System.getenv("REMOTE_DRIVER_MODE");
+        boolean isRemote = remote != null && remote.equalsIgnoreCase("true");
+        WebDriver driver;
+        if (isRemote) {
+            String remoteHost = Objects.requireNonNullElse(System.getenv("SELENIUM_HOST"), "host.docker.internal");
+            String remote_url_chrome = "http://" + remoteHost + ":4444/wd/hub";
+            driver = new RemoteWebDriver(new URL(remote_url_chrome), getChromeOptions());
+            System.out.println("REMOTE_SELENIUM_HOST: " + remoteHost);
+        } else {
+            System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+            driver = new ChromeDriver(getChromeOptions());
+        }
 
         String crapiUrl = Objects.requireNonNullElse(System.getenv("CRAPI_URL"), "http://localhost/");
-        System.out.println("CRAPI URL: " + crapiUrl + ", SELENIUM_HOST: " + remoteHost);
+        System.out.println("CRAPI URL: " + crapiUrl);
         try {
             driver.manage().window().maximize();
             driver.get(crapiUrl);
@@ -56,6 +67,8 @@ public class CrapiLoadgen {
         options.addArguments("start-maximized");
         options.addArguments("window-size=1200,600");
         options.setAcceptInsecureCerts(true);
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
         return options;
     }
 

@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crapi-loadgen
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: crapi-loadgen
+              image: levoai/crapi-loadgen:latest
+              imagePullPolicy: Always
+              env:
+                - name: CRAPI_URL
+                  value: "http://crapi-web"
+              restartPolicy: Never
