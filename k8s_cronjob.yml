@@ -11,8 +11,8 @@ spec:
           containers:
             - name: crapi-loadgen
               image: levoai/crapi-loadgen:latest
-              imagePullPolicy: Always
+              imagePullPolicy: IfNotPresent
               env:
                 - name: CRAPI_URL
                   value: "http://crapi-web"
-              restartPolicy: Never
+          restartPolicy: Never
