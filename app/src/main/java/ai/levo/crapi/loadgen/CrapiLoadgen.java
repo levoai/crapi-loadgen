@@ -34,28 +34,31 @@ public class CrapiLoadgen {
             driver = new RemoteWebDriver(new URL(remote_url_chrome), getChromeOptions());
             System.out.println("REMOTE_SELENIUM_HOST: " + remoteHost);
         } else {
-            System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        	//Comment below line for local testing
+        	 System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
             driver = new ChromeDriver(getChromeOptions());
         }
-
-        String crapiUrl = Objects.requireNonNullElse(System.getenv("CRAPI_URL"), "http://localhost/");
+        //Comment below line for local testing
+        String crapiUrl = Objects.requireNonNullElse((System.getenv("CRAPI_URL")), "http://localhost/");
+        //Uncomment below line for local testing
+        //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
         System.out.println("CRAPI URL: " + crapiUrl);
         try {
             driver.manage().window().maximize();
             driver.get(crapiUrl);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-            WebDriverWait element = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait element = new WebDriverWait(driver, Duration.ofSeconds(20));
             JavascriptExecutor jse = (JavascriptExecutor) driver;
             //login
             login(driver);
             //DashBoard
-            dashBoard(driver, element);
+            dashBoard(driver, element, jse);
             //Shop
             //shop(driver,element,jse);
             //Community
-            community(driver, element);
+            community(driver, element, jse);
             //logout
-            logOut(driver, element);
+            logOut(driver, element, jse);
         } finally {
             driver.quit();
         }
@@ -65,7 +68,7 @@ public class CrapiLoadgen {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("start-maximized");
-        options.addArguments("window-size=1200,600");
+        options.addArguments("--window-size=1400,600");
         options.setAcceptInsecureCerts(true);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -79,8 +82,11 @@ public class CrapiLoadgen {
         System.out.println("Login Successful");
     }
 
-    private void dashBoard(WebDriver driver, WebDriverWait element) {
-        driver.findElement(By.cssSelector("span[class='ant-menu-title-content']")).click();
+    private void dashBoard(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) {
+        //driver.findElement(By.cssSelector("span[class='ant-menu-title-content']")).click();
+    	element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child")));
+    	WebElement el=driver.findElement(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child"));
+    	jse.executeScript("arguments[0].click();", el);
         driver.findElement(By.xpath("//span[text()='Contact Mechanic']")).click();
         driver.findElement(By.id("add-vehicle_mechanicCode")).click();
         driver.findElement(By.xpath("//div[@title='TRAC_MECH1']")).click();
@@ -97,7 +103,11 @@ public class CrapiLoadgen {
     }
 
     private void shop(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
-        driver.findElement(By.xpath("//span[text()='Shop']")).click();
+//    	element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child")));
+//    	WebElement el=driver.findElement(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child:"));
+    	WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-menu-dark')]/li[2]"));
+    	jse.executeScript("arguments[0].click();", el);
+      //  driver.findElement(By.xpath("//span[text()='Shop']")).click();
         element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Buy']")));
         driver.findElement(By.xpath("//span[text()='Buy']")).click();
         Thread.sleep(5000);
@@ -110,9 +120,15 @@ public class CrapiLoadgen {
         System.out.println("Shop action Successful");
     }
 
-    private void community(WebDriver driver, WebDriverWait element) throws InterruptedException {
-        driver.findElement(By.xpath("//span[text()='Community']")).click();
-        driver.findElement(By.xpath("//span[text()='New Post']")).click();
+    private void community(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
+      // driver.findElement(By.xpath("//span[text()='Community']")).click();
+    	//element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child")));
+    	WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-menu-dark')]/li[3]"));
+    	jse.executeScript("arguments[0].click();", el);
+//    	WebElement el=driver.findElement(By.cssSelector("li[data-menu-id*='-forum']"));
+//    	JavascriptExecutor executor = (JavascriptExecutor) driver;
+//    	executor.executeScript("arguments[0].click();", el);
+    	driver.findElement(By.xpath("//span[text()='New Post']")).click();
         driver.findElement(By.id("new-post_title")).click();
         driver.findElement(By.id("new-post_title")).sendKeys("Test");
         driver.findElement(By.id("new-post_content")).click();
@@ -137,12 +153,16 @@ public class CrapiLoadgen {
         System.out.println("Community action Successful");
     }
 
-    private void logOut(WebDriver driver, WebDriverWait element) throws InterruptedException {
-        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='ant-dropdown-trigger nav-items']")));
+    private void logOut(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
+//        element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-dropdown-trigger.nav-items")));
+//        driver.findElement(By.cssSelector("div.ant-dropdown-trigger.nav-items")).click();
+    	element.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='ant-dropdown-trigger nav-items']")));
         driver.findElement(By.className("ant-dropdown-trigger")).click();
-        Thread.sleep(2000);
-        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(@data-menu-id,'logout')]")));
-        driver.findElement(By.xpath("//li[contains(@data-menu-id,'logout')]")).click();
+        Thread.sleep(5000);
+       // element.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(@data-menu-id,'logout')]")));
+       // driver.findElement(By.xpath("//li[contains(@data-menu-id,'logout')]")).click();
+        WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-dropdown-menu')]/li[2]"));
+        jse.executeScript("arguments[0].click();", el);
         System.out.println("LogOut Successful");
     }
 
