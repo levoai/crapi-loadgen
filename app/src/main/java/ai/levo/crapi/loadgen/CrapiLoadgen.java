@@ -41,7 +41,7 @@ public class CrapiLoadgen {
         //Comment below line for local testing
         String crapiUrl = Objects.requireNonNullElse((System.getenv("CRAPI_URL")), "http://localhost/");
         //Uncomment below line for local testing
-        //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
+      //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
         System.out.println("CRAPI URL: " + crapiUrl);
         try {
             driver.manage().window().maximize();
@@ -54,7 +54,7 @@ public class CrapiLoadgen {
             //DashBoard
             dashBoard(driver, element, jse);
             //Shop
-            //shop(driver,element,jse);
+            shop(driver,element,jse);
             //Community
             community(driver, element, jse);
             //logout
@@ -68,7 +68,7 @@ public class CrapiLoadgen {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("start-maximized");
-        options.addArguments("--window-size=1400,600");
+        options.addArguments("--window-size=1200,600");
         options.setAcceptInsecureCerts(true);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
@@ -107,16 +107,15 @@ public class CrapiLoadgen {
 //    	WebElement el=driver.findElement(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child:"));
     	WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-menu-dark')]/li[2]"));
     	jse.executeScript("arguments[0].click();", el);
-      //  driver.findElement(By.xpath("//span[text()='Shop']")).click();
         element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Buy']")));
-        driver.findElement(By.xpath("//span[text()='Buy']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//span[text()='OK']")).click();
-        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Return']")));
-        driver.findElement(By.xpath("//span[text()='Return']")).click();
-        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='OK']")));
-        driver.findElement(By.xpath("//span[text()='OK']")).click();
-        jse.executeScript("window.scrollBy(0,-500)");
+//        driver.findElement(By.xpath("//span[text()='Buy']")).click();
+//        Thread.sleep(5000);
+//        driver.findElement(By.xpath("//span[text()='OK']")).click();
+//        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Return']")));
+//        driver.findElement(By.xpath("//span[text()='Return']")).click();
+//        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='OK']")));
+//        driver.findElement(By.xpath("//span[text()='OK']")).click();
+//        jse.executeScript("window.scrollBy(0,-500)");
         System.out.println("Shop action Successful");
     }
 
@@ -154,14 +153,17 @@ public class CrapiLoadgen {
     }
 
     private void logOut(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
-//        element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-dropdown-trigger.nav-items")));
-//        driver.findElement(By.cssSelector("div.ant-dropdown-trigger.nav-items")).click();
-    	element.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='ant-dropdown-trigger nav-items']")));
-        driver.findElement(By.className("ant-dropdown-trigger")).click();
-        Thread.sleep(5000);
-       // element.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(@data-menu-id,'logout')]")));
-       // driver.findElement(By.xpath("//li[contains(@data-menu-id,'logout')]")).click();
-        WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-dropdown-menu')]/li[2]"));
+//    	element.until(ExpectedConditions.elementToBeClickable(By.xpath("//header[@class='ant-layout-header']/div[2]/div[3]/div")));
+//    	driver.findElement(By.xpath("//header[@class='ant-layout-header']/div[2]/div[3]/div")).click();
+    	//element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div.ant-dropdown-trigger.nav-items")));
+    	driver.navigate().refresh();
+    	Thread.sleep(5000);
+    	driver.findElement(By.cssSelector("div.ant-dropdown-trigger.nav-items")).click();
+//        Thread.sleep(2000);
+//        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//li[contains(@data-menu-id,'logout')]")));
+//        WebElement el= driver.findElement(By.xpath("//li[contains(@data-menu-id,'logout')]"));
+        element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-dropdown-menu-item:nth-child(2)")));
+        WebElement el= driver.findElement(By.cssSelector("li.ant-dropdown-menu-item:nth-child(2)"));
         jse.executeScript("arguments[0].click();", el);
         System.out.println("LogOut Successful");
     }
