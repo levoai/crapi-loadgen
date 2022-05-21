@@ -30,7 +30,7 @@ dependencies {
 
 docker {
     javaApplication {
-        baseImage = 'openjdk:bullseye'
+        baseImage = 'openjdk:11-jre-bullseye'
         maintainer = 'Levo, Inc'
         images = ['levoai/crapi-loadgen:latest']
     }
@@ -49,6 +49,8 @@ dockerCreateDockerfile {
     instruction 'RUN unzip chromedriver_linux64.zip'
     instruction 'RUN mv chromedriver /usr/local/bin/chromedriver'
     instruction 'RUN chmod +x /usr/local/bin/chromedriver'
+    instruction 'RUN rm chromedriver_linux64.zip'
+    instruction 'RUN apt-get -y clean autoclean && apt-get -y autoremove && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*'
 }
 
 tasks.named('test') {
