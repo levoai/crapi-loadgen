@@ -41,7 +41,7 @@ public class CrapiLoadgen {
         //Comment below line for local testing
         String crapiUrl = Objects.requireNonNullElse((System.getenv("CRAPI_URL")), "http://localhost/");
         //Uncomment below line for local testing
-      //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
+        //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
         System.out.println("CRAPI URL: " + crapiUrl);
         try {
             driver.manage().window().maximize();
@@ -51,12 +51,14 @@ public class CrapiLoadgen {
             JavascriptExecutor jse = (JavascriptExecutor) driver;
             //login
             login(driver);
-            //DashBoard
-            dashBoard(driver, element, jse);
-            //Shop
-            shop(driver,element,jse);
-            //Community
-            community(driver, element, jse);
+
+            int numIterations = Integer.parseInt(Objects.requireNonNullElse(System.getenv("NUM_ITERATIONS"), "5"));
+            for (int i = 0; i < numIterations; i++) {
+                dashBoard(driver, element, jse);
+                shop(driver, element, jse);
+                community(driver, element, jse);
+            }
+
             //logout
             logOut(driver, element, jse);
         } finally {
@@ -72,6 +74,13 @@ public class CrapiLoadgen {
         options.setAcceptInsecureCerts(true);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+
+        // Check if there is a proxy configured.
+        String proxy = System.getenv("HTTP_PROXY");
+        if (proxy != null) {
+            options.addArguments("--proxy-server=" + proxy);
+        }
+
         return options;
     }
 
