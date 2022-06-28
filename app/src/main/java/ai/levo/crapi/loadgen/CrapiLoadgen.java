@@ -10,6 +10,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,6 +18,8 @@ import java.time.Duration;
 import java.util.Objects;
 
 public class CrapiLoadgen {
+    private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(CrapiLoadgen.class);
+
     public static void main(String[] args) throws InterruptedException, MalformedURLException {
         new CrapiLoadgen().generateLoad();
     }
@@ -32,7 +35,7 @@ public class CrapiLoadgen {
             String remoteHost = Objects.requireNonNullElse(System.getenv("SELENIUM_HOST"), "host.docker.internal");
             String remote_url_chrome = "http://" + remoteHost + ":4444/wd/hub";
             driver = new RemoteWebDriver(new URL(remote_url_chrome), getChromeOptions());
-            System.out.println("REMOTE_SELENIUM_HOST: " + remoteHost);
+            LOG.info("REMOTE_SELENIUM_HOST: " + remoteHost);
         } else {
         	//Comment below line for local testing
         	 System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
@@ -42,7 +45,7 @@ public class CrapiLoadgen {
         String crapiUrl = Objects.requireNonNullElse((System.getenv("CRAPI_URL")), "http://localhost/");
         //Uncomment below line for local testing
         //String crapiUrl = Objects.requireNonNullElse("http://35.225.176.150", "");
-        System.out.println("CRAPI URL: " + crapiUrl);
+        LOG.info("CRAPI URL: " + crapiUrl);
         try {
             driver.manage().window().maximize();
             driver.get(crapiUrl);
@@ -88,7 +91,7 @@ public class CrapiLoadgen {
         driver.findElement(By.id("basic_email")).sendKeys("hacker@darkweb.com");
         driver.findElement(By.id("basic_password")).sendKeys("Hack3r$$$");
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        System.out.println("Login Successful");
+        LOG.info("Login Successful");
     }
 
     private void dashBoard(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) {
@@ -108,10 +111,10 @@ public class CrapiLoadgen {
         WebElement element1 = (new WebDriverWait(driver, Duration.ofSeconds(60))).until(ExpectedConditions.elementToBeClickable(By.className("ant-table-row")));
         driver.findElement(By.xpath("//span[text()='Back to Dashboard']")).click();
         element.until(ExpectedConditions.invisibilityOfElementLocated(By.className("spiner")));
-        System.out.println("Dashboard action Successful");
+        LOG.info("Dashboard action Successful");
     }
 
-    private void shop(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
+    private void shop(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) {
 //    	element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child")));
 //    	WebElement el=driver.findElement(By.cssSelector("li.ant-menu-overflow-item.ant-menu-item.ant-menu-item-only-child:"));
     	WebElement el=driver.findElement(By.xpath("//ul[contains(@class,'ant-menu-dark')]/li[2]"));
@@ -125,7 +128,7 @@ public class CrapiLoadgen {
 //        element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='OK']")));
 //        driver.findElement(By.xpath("//span[text()='OK']")).click();
 //        jse.executeScript("window.scrollBy(0,-500)");
-        System.out.println("Shop action Successful");
+        LOG.info("Shop action Successful");
     }
 
     private void community(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
@@ -158,7 +161,7 @@ public class CrapiLoadgen {
         driver.findElement(By.xpath("//span[text()='Add a Comment']")).click();
         element.until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='OK']")));
         driver.findElement(By.xpath("//span[text()='OK']")).click();
-        System.out.println("Community action Successful");
+        LOG.info("Community action Successful");
     }
 
     private void logOut(WebDriver driver, WebDriverWait element, JavascriptExecutor jse) throws InterruptedException {
@@ -174,7 +177,7 @@ public class CrapiLoadgen {
         element.until(ExpectedConditions.elementToBeClickable(By.cssSelector("li.ant-dropdown-menu-item:nth-child(2)")));
         WebElement el= driver.findElement(By.cssSelector("li.ant-dropdown-menu-item:nth-child(2)"));
         jse.executeScript("arguments[0].click();", el);
-        System.out.println("LogOut Successful");
+        LOG.info("LogOut Successful");
     }
 
 }
