@@ -18,6 +18,9 @@ repositories {
 }
 
 dependencies {
+    implementation("ch.qos.logback:logback-classic:1.2.6")
+    implementation 'ch.qos.logback:logback-core:1.2.6'
+
     implementation 'org.seleniumhq.selenium:selenium-java:4.1.4'
     implementation 'io.github.bonigarcia:webdrivermanager:3.4.0'
 
@@ -45,7 +48,7 @@ dockerCreateDockerfile {
     instruction 'RUN apt-get update && apt-get -y install google-chrome-stable'
 
     // Install ChromeDriver.
-    instruction 'RUN wget https://chromedriver.storage.googleapis.com/101.0.4951.41/chromedriver_linux64.zip'
+    instruction 'RUN wget https://chromedriver.storage.googleapis.com/103.0.5060.53/chromedriver_linux64.zip'
     instruction 'RUN unzip chromedriver_linux64.zip'
     instruction 'RUN mv chromedriver /usr/local/bin/chromedriver'
     instruction 'RUN chmod +x /usr/local/bin/chromedriver'
