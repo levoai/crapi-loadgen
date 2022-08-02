@@ -1,0 +1,31 @@
+name: Generate Load on crAPI
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+
+jobs:
+  loadgen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: levoai/actions/test-plan@v1-beta
+        with:
+          # Authorization key required to execute the Levo CLI. Please refer to https://app.levo.ai/settings/keys to get your authorization key.
+          authorization-key: '${{ secrets.LEVO_CLI_AUTH_KEY }}'
+
+          # The ID of your organization in Levo dashboard. Please refer to https://app.levo.ai/settings/organization to get your organization id.
+          organization-id: '5f733ed8-39c9-40d1-86b3-11e2b0451842'
+
+          # URL for the instance of the application under test.
+          target: 'http://crapi.levo.ai'
+
+          # Test plan LRN. You can get this value from the test plan section in Saas.
+          plan: 'continuous_testing_levo_ai:ws/continuous_testing:app/crapi_loadgen:tp/crapi_loadgen'
+
+          # [OPTIONAL] Base64 encoded environment file content.
+          base64_env: '${{ secrets.CRAPI_ENV_BASE64 }}'
+
+          # [OPTIONAL] If you decide not to report the result of this execution back to Saas set this value to false. Default: true.
+          report: false
+
+          # [OPTIONAL] Use this option to pass CLI extra arguments like headers or verbosity. Please use \\\˝ to escape quotes.
+          cli_extra_args: "--verbosity INFO"
