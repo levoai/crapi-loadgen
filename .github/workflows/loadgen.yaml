@@ -2,6 +2,7 @@ name: Generate Load on crAPI
 on:
   schedule:
     - cron: '*/15 * * * *'
+  workflow_dispatch:
 
 jobs:
   loadgen:
