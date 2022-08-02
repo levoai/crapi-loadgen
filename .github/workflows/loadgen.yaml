@@ -14,7 +14,7 @@ jobs:
           base64_env: ${{ secrets.CRAPI_ENV_BASE64 }}
           authorization-key: ${{ secrets.LEVO_CLI_AUTH_KEY }}
           organization-id: ${{ secrets.LEVO_CI_ORGANIZATION_ID }}
-          target: http://crapi.levo.ai
+          target: http://35.225.176.150
           fail-on-failed-tests: false
           saas-url: https://api.dev.levo.ai
           report: false
