@@ -30,6 +30,6 @@ docker-compose up
           Open System environment variables, Under System Variables. Click New. Add Variable name:NODE_HOME and value:C:\Program Files\nodejs and OK
 2. Download Visual studio Code and install
 3. Clone the repo
-4. In VS Code Terminal, Navigate to app/ and run npm install(Installs all dependencies in package.json)
-5. To open testRunner,In VSCode Terminal enter node_modules/.bin/cypress open. select E2E Testing. Select Chrome and Click Start E2E testing in Chrome.
+4. In VS Code Terminal, Navigate to app/ and run `npm install`(Installs all dependencies in package.json)
+5. To open testRunner,In VSCode Terminal enter `node_modules/.bin/cypress open`. select E2E Testing. Select Chrome and Click Start E2E testing in Chrome.
 6. Click on the test and run it.and we can see the results.
