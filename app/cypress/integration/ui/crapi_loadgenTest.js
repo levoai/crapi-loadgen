@@ -1,15 +1,19 @@
 ///<reference types="Cypress"/>
-describe('My First test suite', function()
+var i = 0;
+var j = 5;
+describe('E2E Testing of crAPI', function()
 {
-    it('My First testcase',function()
+    it('E2E Testing',function()
     {
-        cy.visit("http://35.225.176.150/");
+        cy.clearCookies();
+        cy.visit(Cypress.env('site'));
        // cy.visit("http://crapi.levo.ai")
         cy.get("#basic_email").type("hacker@darkweb.com");
         cy.get("#basic_password").type("Hack3r$$$");
         cy.get("button[type='submit']").click();
         cy.log("Login Successfull");
 
+        for (i = 0; i < j ; i++) {  
         cy.get('[style="opacity: 1; order: 0;"] > .ant-menu-title-content').click();
         cy.get('span').contains('Contact Mechanic').click();
         cy.get("#add-vehicle_mechanicCode").click();
@@ -47,29 +51,12 @@ describe('My First test suite', function()
         cy.get("#basic_comment").click().type("Test1");
         cy.get('span').contains('Add a Comment').click();
         cy.get('.ant-modal-confirm-btns > .ant-btn > span').click();
-        cy.log("Community ACtion Successfull");
+        cy.log("Community Action Successfull");
+    }
 
         cy.get("div.ant-dropdown-trigger.nav-items").click();
         cy.get("li.ant-dropdown-menu-item:nth-child(2)").click();
-        cy.log("Logout ACtion Successfull");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        cy.log("Logout Action Successfull");
 
 
 
