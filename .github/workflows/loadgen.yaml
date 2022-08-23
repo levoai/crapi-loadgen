@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: levoai/actions/test-plan@main
         with:
-          plan: "continuous_testing_levo_ai:ws/continuous_testing:app/crapi_loadgen:tp/crapi_loadgen"
+          plan: "continuous_testing_levo_ai_auth0:ws/continuous_testing:app/crapi_loadgen:tp/crapi_loadgen"
           base64_env: ${{ secrets.CRAPI_ENV_BASE64 }}
           authorization-key: ${{ secrets.LEVO_CLI_AUTH_KEY }}
           organization-id: ${{ secrets.LEVO_CI_ORGANIZATION_ID }}
