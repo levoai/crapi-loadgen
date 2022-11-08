@@ -10,7 +10,7 @@ on:
         required: false
 
 env:
-  CRAPI_URL: ${{ inputs.crapi_url || 'http://35.225.176.150' }}
+  CRAPI_URL: ${{ inputs.crapi_url || 'http://34.170.155.55' }}
 
 jobs:
   loadgen:
