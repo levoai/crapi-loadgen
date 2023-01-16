@@ -1,7 +1,5 @@
 name: Generate Load on crAPI
 on:
-  schedule:
-    - cron: '0 */2 * * *'
   workflow_dispatch:
     inputs:
       crapi_url:
