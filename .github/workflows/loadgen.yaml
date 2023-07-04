@@ -8,7 +8,7 @@ on:
         required: false
 
 env:
-  CRAPI_URL: ${{ inputs.crapi_url || 'http://34.170.155.55' }}
+  CRAPI_URL: ${{ inputs.crapi_url || 'http://crapi-dev.levo.ai/' }}
 
 jobs:
   loadgen:
