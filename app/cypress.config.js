@@ -3,7 +3,7 @@ const { defineConfig } = require("cypress");
 module.exports = defineConfig({
   env:
   {
-    site:'http://35.225.176.150/'
+    site:'http://crapi-dev.levo.ai/'
   },
   e2e: {
     setupNodeEvents(on, config) {
